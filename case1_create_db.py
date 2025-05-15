@@ -79,29 +79,10 @@ def create_db():
     """)
 
     # Создание справочников
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS mkb (
-        id SERIAL PRIMARY KEY,
-        code VARCHAR(28) NOT NULL,
-        name VARCHAR(250) NOT NULL
-    );
-    """)
+    with open("sql_scripts/create_table.sql", "r", encoding="utf-8") as f:
+        sql_script = f.read()
+    cursor.executescript(sql_script)
 
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS rbSpeciality (
-        id SERIAL PRIMARY KEY,
-        code VARCHAR(28) NOT NULL,
-        name VARCHAR(250) NOT NULL
-    );
-    """)
-
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS rbService (
-        id SERIAL PRIMARY KEY,
-        code VARCHAR(28) NOT NULL,
-        name VARCHAR(450) NOT NULL
-    );
-    """)
 
     # Сохраняем изменения и закрываем соединение
     conn.commit()
