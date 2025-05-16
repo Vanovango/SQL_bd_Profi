@@ -17,7 +17,7 @@ def create_db():
         middle_name TEXT,
         gender TEXT CHECK (gender IN ('М', 'Ж')) NOT NULL,
         birth_date DATE NOT NULL,
-        oms_policy_number TEXT UNIQUE NOT NULL
+        oms_policy_number TEXT NOT NULL
     );
     """)
 
@@ -30,24 +30,21 @@ def create_db():
         middle_name TEXT,
         snils TEXT UNIQUE NOT NULL,
         specialty_code TEXT NOT NULL,
-        FOREIGN KEY (specialty_code) REFERENCES rbSpeciality(code)
+        
+        FOREIGN KEY (specialty_code) REFERENCES rbSpeciality(id)
     );
     """)
 
     # Таблица случаев оказания медицинской помощи
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS MedicalCases (
-        case_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        patient_id INTEGER NOT NULL,
-        doctor_id INTEGER NOT NULL,
+        case_id INTEGER PRIMARY KEY AUTOINCREMENT,        
         start_date DATE NOT NULL,
         end_date DATE,
-        result TEXT CHECK (result IN (
-            'выздоровление', 'улучшение', 'динамическое наблюдение',
-            'направление в стационар', 'ухудшение', 'летальный исход'
-        )) NOT NULL,
-        FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
-        FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)
+        doctor_id INTEGER NOT NULL,
+        result TEXT NOT NULL,
+        
+        FOREIGN KEY (doctor_id) REFERENCES rbSpeciality(id)
     );
     """)
 
@@ -55,12 +52,11 @@ def create_db():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS CaseDiagnoses (
         diagnosis_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        case_id INTEGER NOT NULL,
         diagnosis_date DATE NOT NULL,
-        icd_code TEXT NOT NULL,
-        diagnosis_type TEXT CHECK (diagnosis_type IN ('основной', 'сопутствующий')) NOT NULL,
-        FOREIGN KEY (case_id) REFERENCES MedicalCases(case_id),
-        FOREIGN KEY (icd_code) REFERENCES Diagnoses(icd_code)
+        diagnosis_code TEXT NOT NULL,
+        diagnosis_type TEXT CHECK (diagnosis_type IN ('основной', 'сопутствующий')),
+        
+        FOREIGN KEY (diagnosis_code) REFERENCES mkb(code)
     );
     """)
 
@@ -68,13 +64,12 @@ def create_db():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS CaseServices (
         service_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        case_id INTEGER NOT NULL,
         service_date DATE NOT NULL,
         service_code TEXT NOT NULL,
         doctor_id INTEGER NOT NULL,
-        FOREIGN KEY (case_id) REFERENCES MedicalCases(case_id),
-        FOREIGN KEY (service_code) REFERENCES ServiceCatalog(service_code),
-        FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)
+
+        FOREIGN KEY (service_code) REFERENCES rbService(code),
+        FOREIGN KEY (doctor_id) REFERENCES rbSpeciality(id)
     );
     """)
 
@@ -88,5 +83,5 @@ def create_db():
     conn.commit()
     conn.close()
 
-if __name__ == "__main__":
-    create_db()
+# if __name__ == "__main__":
+#     create_db()
