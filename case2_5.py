@@ -1,6 +1,4 @@
 import sqlite3
-import csv
-import os
 
 def count_lines_in_csv(filepath, skip_header=True):
     with open(filepath, "r", encoding="utf-8") as f:
@@ -59,5 +57,5 @@ def main():
     check_foreign_keys()
 
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()

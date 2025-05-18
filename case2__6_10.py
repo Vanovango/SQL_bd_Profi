@@ -112,6 +112,6 @@ def main():
     export_case_services_grouped()
     export_medical_cases_by_month()
 
-#
+
 # if __name__ == "__main__":
 #     main()
