@@ -113,5 +113,5 @@ def main():
     export_medical_cases_by_month()
 
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()

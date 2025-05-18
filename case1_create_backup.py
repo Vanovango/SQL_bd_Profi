@@ -14,9 +14,9 @@ def main():
     conn.close()
     backup_conn.close()
 
-#
-# if __name__ == "__main__":
-#     main()
+
+if __name__ == "__main__":
+    main()
 
 
 

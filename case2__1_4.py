@@ -105,5 +105,5 @@ def load_all_data():
     load_into_case_services()
 
 
-# if __name__ == "__main__":
-#     load_all_data()
+if __name__ == "__main__":
+    load_all_data()
